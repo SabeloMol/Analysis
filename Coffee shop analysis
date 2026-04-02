@@ -1,4 +1,3 @@
--- Explore the table
 SELECT *
 FROM workspace.default.bright_coffee_shop_sales
 LIMIT 10;
