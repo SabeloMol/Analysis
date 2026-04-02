@@ -1,0 +1,74 @@
+-- Explore the table
+SELECT *
+FROM workspace.default.bright_coffee_shop_sales
+LIMIT 10;
+
+-- 1. Checking the Date Range
+SELECT MIN(transaction_date) AS min_date
+FROM workspace.default.bright_coffee_shop_sales;
+
+SELECT MAX(transaction_date) AS latest_date
+FROM workspace.default.bright_coffee_shop_sales;
+
+-- 2. Checking the names of the different stores
+SELECT DISTINCT store_location
+FROM workspace.default.bright_coffee_shop_sales;
+
+SELECT COUNT(DISTINCT store_id) AS number_of_stores
+FROM workspace.default.bright_coffee_shop_sales;
+
+-- 3. Checking products sold at our stores
+SELECT DISTINCT product_category
+FROM workspace.default.bright_coffee_shop_sales;
+
+SELECT DISTINCT product_detail
+FROM workspace.default.bright_coffee_shop_sales;
+
+SELECT DISTINCT product_type
+FROM workspace.default.bright_coffee_shop_sales;
+
+SELECT DISTINCT
+      product_category AS category,
+      product_detail AS product_name
+FROM workspace.default.bright_coffee_shop_sales;
+
+-- 4. Checking product prices
+SELECT MIN(unit_price) AS cheapest_price
+FROM workspace.default.bright_coffee_shop_sales;
+
+SELECT MAX(unit_price) AS expensive_price
+FROM workspace.default.bright_coffee_shop_sales;
+
+-- Summary counts
+SELECT
+      COUNT(*) AS number_of_rows,
+      COUNT(DISTINCT transaction_id) AS number_of_sales,
+      COUNT(DISTINCT product_id) AS number_of_products,
+      COUNT(DISTINCT store_id) AS number_of_stores
+FROM workspace.default.bright_coffee_shop_sales;
+
+-- Sample rows
+SELECT *
+FROM workspace.default.bright_coffee_shop_sales
+LIMIT 10;
+
+-- Add day and month names, calculate revenue per transaction
+SELECT
+      transaction_date,
+      date_format(transaction_date, 'EEEE') AS Day_name,
+      date_format(transaction_date, 'MMMM') AS Month_name,
+      COUNT(DISTINCT transaction_id) AS Number_of_sales,
+      COUNT(DISTINCT product_id) AS Number_of_products,
+      COUNT(DISTINCT store_id) AS Number_of_stores,
+      store_location,
+      product_category,
+      product_type,
+      SUM(transaction_qty * unit_price) AS revenue_per_day
+FROM workspace.default.bright_coffee_shop_sales
+GROUP BY
+      transaction_date,
+      date_format(transaction_date, 'EEEE'),
+      date_format(transaction_date, 'MMMM'),
+      store_location,
+      product_category,
+      product_type
